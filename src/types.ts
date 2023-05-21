@@ -1,10 +1,23 @@
+import React from 'react';
+
 declare global {
   interface Window {
-    microui: Record<string, MicroUIConfig>;
+    microui: {
+      apps: Record<string, MicroUIAppRegistration>;
+    };
   }
 }
 
-export type MicroUIConfig = {
-  renderAtElement: (id: string) => void;
-  unmountAtElement: (id: string) => void;
+export type MicroUIAppProviderProps = {
+  /**
+   * Routing utilities for performing navigation.
+   */
+  routing: { push: (path: string) => void };
+  children?: React.ReactNode;
+};
+
+export type MicroUIAppRegistration = {
+  name: string;
+  Provider?: React.ComponentType<MicroUIAppProviderProps>;
+  routes: Record<string, { element: React.ReactElement }>;
 };

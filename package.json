@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.js",
-    "lint": "eslint .",
-    "test": "vitest"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@lifeomic/typescript-config": "^3.0.0",
@@ -21,7 +20,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "semantic-release": "^21.0.2",
-    "typescript": "^5.0.4",
-    "vitest": "^0.31.1"
+    "typescript": "^5.0.4"
   }
 }

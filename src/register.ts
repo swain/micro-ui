@@ -1,17 +1,8 @@
-export type AppRegistrationConfig = {
-  name: string;
-  renderAtElement: (id: string) => void;
-  unmountAtElement: (id: string) => void;
-};
+import { MicroUIAppRegistration } from './types';
 
-export const registerApp = ({
-  name,
-  renderAtElement,
-  unmountAtElement,
-}: AppRegistrationConfig) => {
+export const registerMicroUIApp = (config: MicroUIAppRegistration) => {
   if (!window.microui) {
-    window.microui = {};
+    window.microui = { apps: {} };
   }
-
-  window.microui[name] = { renderAtElement, unmountAtElement };
+  window.microui.apps[config.name] = config;
 };

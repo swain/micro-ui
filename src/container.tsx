@@ -1,32 +1,41 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import { MicroUIAppRegistration } from './types';
 
-export type RemoteAppProps = {
+export type UseRemoteAppOptions = {
   name: string;
+  // TODO: Consider simplifying this to "host", and get opinionated about the
+  // location of the manifest file.
   getBundleURL: () => Promise<string>;
 };
 
-export const RemoteApp: React.FC<RemoteAppProps> = ({ name, getBundleURL }) => {
-  const elementId = `micro-ui-root-${name}`;
+export type UseRemoteAppReturnValue =
+  | { status: 'loading' }
+  | { status: 'success'; config: MicroUIAppRegistration };
+
+export const useRemoteApp = ({
+  name,
+  getBundleURL,
+}: UseRemoteAppOptions): UseRemoteAppReturnValue => {
   const scriptId = `micro-ui-script-${name}`;
 
-  const ref = useRef<HTMLDivElement>(null);
+  const [state, setState] = React.useState<UseRemoteAppReturnValue>({
+    status: 'loading',
+  });
+
+  // TODO: use react-query to ensure we don't re-run this if the hook
+  // is called multiple times.
 
   useEffect(() => {
-    // Don't add the script until the root element is available.
-    if (!ref.current) {
-      return;
-    }
-
     getBundleURL().then((bundleURL) => {
       const script = document.createElement('script');
       script.id = scriptId;
       script.src = bundleURL;
       script.onload = () => {
-        window.microui[name].renderAtElement(elementId);
+        setState({ status: 'success', config: window.microui.apps[name] });
       };
       document.head.appendChild(script);
     });
-  }, [ref.current]);
+  }, []);
 
-  return <div ref={ref} id={elementId} />;
+  return state;
 };
