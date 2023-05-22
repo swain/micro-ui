@@ -36,7 +36,7 @@ beforeAll(async () => {
         ctx.json({
           name: 'test-app',
           version: '1.0.0',
-          bundle: `${CHILD_APP_HOST}/bundle.js`,
+          bundleURL: `${CHILD_APP_HOST}/bundle.js`,
         }),
       ),
     ),
