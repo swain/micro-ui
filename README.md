@@ -1,5 +1,7 @@
 A _tiny_ framework for building micro frontend apps using React.
 
+The source code has zero dependencies, and is less than 100 lines of code.
+
 ## Micro Frontends
 
 To understand the micro-frontend architecture pattern in general, [read this article](https://martinfowler.com/articles/micro-frontends.html).
