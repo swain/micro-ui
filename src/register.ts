@@ -1,3 +1,4 @@
+import { withBaseMicroUIAppProvider } from './context';
 import { MicroUIAppRegistration } from './types';
 
 export const registerMicroUIApp = (config: MicroUIAppRegistration) => {
@@ -5,6 +6,8 @@ export const registerMicroUIApp = (config: MicroUIAppRegistration) => {
     window.microui = { apps: {} };
   }
 
-  // TODO: wrap the "providers" using withBaseMicroUIAppProvider
-  window.microui.apps[config.name] = config;
+  window.microui.apps[config.name] = {
+    ...config,
+    Provider: withBaseMicroUIAppProvider(config.Provider),
+  };
 };

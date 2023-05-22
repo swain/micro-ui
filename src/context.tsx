@@ -14,11 +14,11 @@ const MicroAppProvider: React.FC<MicroUIAppProviderProps> = ({
 };
 
 export const withBaseMicroUIAppProvider =
-  (Provider: React.ComponentType<MicroUIAppProviderProps>) =>
+  (Provider?: React.ComponentType<MicroUIAppProviderProps>) =>
   ({ children, ...props }: MicroUIAppProviderProps) =>
     (
       <MicroAppProvider {...props}>
-        <Provider {...props}>{children}</Provider>
+        {Provider ? <Provider {...props}>{children}</Provider> : children}
       </MicroAppProvider>
     );
 

@@ -19,5 +19,5 @@ export type MicroUIAppProviderProps = {
 export type MicroUIAppRegistration = {
   name: string;
   Provider?: React.ComponentType<MicroUIAppProviderProps>;
-  routes: Record<string, { element: React.ReactElement }>;
+  routes: Record<string, { Component: React.ComponentType<{}> }>;
 };

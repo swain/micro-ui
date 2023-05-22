@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
 import { MicroUIAppRegistration } from './types';
 
-export type UseRemoteAppOptions = {
+export type UseRemoteMicroUIAppOptions = {
   name: string;
-  // TODO: Consider simplifying this to "host", and get opinionated about the
-  // location of the manifest file.
-  getBundleURL: () => Promise<string>;
+  host: string;
 };
 
-export type UseRemoteAppReturnValue =
+export type UseRemoteMicroUIAppReturnValue =
   | { status: 'loading' }
   | { status: 'success'; config: MicroUIAppRegistration };
 
-export const useRemoteApp = ({
+const getManifest = (host: string) =>
+  fetch(`${host}/micro-manifest.json`).then((res) => res.json());
+
+export const useRemoteMicroUIApp = ({
   name,
-  getBundleURL,
-}: UseRemoteAppOptions): UseRemoteAppReturnValue => {
+  host,
+}: UseRemoteMicroUIAppOptions): UseRemoteMicroUIAppReturnValue => {
   const scriptId = `micro-ui-script-${name}`;
 
-  const [state, setState] = React.useState<UseRemoteAppReturnValue>({
+  const [state, setState] = React.useState<UseRemoteMicroUIAppReturnValue>({
     status: 'loading',
   });
 
@@ -26,10 +27,10 @@ export const useRemoteApp = ({
   // is called multiple times.
 
   useEffect(() => {
-    getBundleURL().then((bundleURL) => {
+    getManifest(host).then((manifest) => {
       const script = document.createElement('script');
       script.id = scriptId;
-      script.src = bundleURL;
+      script.src = manifest.bundle;
       script.onload = () => {
         setState({ status: 'success', config: window.microui.apps[name] });
       };
