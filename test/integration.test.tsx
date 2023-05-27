@@ -18,6 +18,8 @@ beforeAll(async () => {
     entryPoints: [`${CHILD_APP_DIR}/main.tsx`],
     bundle: true,
     outfile: `${CHILD_APP_DIR}/dist/bundle.js`,
+    external: ['react', 'react-dom'],
+    format: 'esm',
   });
 
   // Now, use MSW to mock the bundle + manifest file.
