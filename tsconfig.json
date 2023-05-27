@@ -1,14 +1,14 @@
 {
   "extends": "@lifeomic/typescript-config",
-  "exclude": ["node_modules"],
   "include": ["src", "test"],
+  "exclude": ["node_modules", "test/child-app/dist"],
   "compilerOptions": {
     "types": ["vitest/globals"],
     "target": "ES2022",
     "module": "ES2022",
     "lib": ["DOM", "esnext"],
-    "noEmit": true,
     "jsx": "react",
+    "outDir": "dist",
     "inlineSources": false,
     "inlineSourceMap": false,
     "esModuleInterop": false,
