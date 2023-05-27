@@ -1,48 +1,57 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
-import { useRemoteMicroUIApp } from '../../src';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
+import { loadMicroUIApp } from '../../src';
 
 const ChildApp: React.FC = () => {
   const navigate = useNavigate();
 
-  const app = useRemoteMicroUIApp({
-    name: 'test-app',
-    host: process.env.CHILD_APP_HOST!,
-  });
+  const query = useQuery(['app'], () =>
+    loadMicroUIApp({
+      name: 'test-app',
+      host: process.env.CHILD_APP_HOST!,
+    }),
+  );
 
-  if (app.status === 'loading') {
+  if (!query.data) {
     return <div>Loading child app...</div>;
   }
+
+  const app = query.data;
 
   const routes = (
     <>
       <div>child app header</div>
       <Routes>
-        {Object.entries(app.config.routes).map(([path, { Component }]) => (
+        {Object.entries(app.routes).map(([path, { Component }]) => (
           <Route key={path} path={path} Component={Component} />
         ))}
       </Routes>
     </>
   );
 
-  if (app.config.Provider) {
-    return (
-      <app.config.Provider routing={{ push: navigate }}>
-        {routes}
-      </app.config.Provider>
-    );
+  if (app.Provider) {
+    return <app.Provider routing={{ push: navigate }}>{routes}</app.Provider>;
   }
 
   return routes;
 };
 
+const client = new QueryClient();
+
 export const Container: React.FC = () => {
   return (
-    <div>
-      <div>Container App Header</div>
-      <BrowserRouter>
-        <ChildApp />
-      </BrowserRouter>
-    </div>
+    <QueryClientProvider client={client}>
+      <div>
+        <div>Container App Header</div>
+        <BrowserRouter>
+          <ChildApp />
+        </BrowserRouter>
+      </div>
+    </QueryClientProvider>
   );
 };
