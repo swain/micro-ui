@@ -37,6 +37,7 @@ export const loadMicroUIApp = async ({ name, host }: LoadMicroUIAppParams) => {
   return new Promise<MicroUIAppRegistration>((resolve) => {
     const script = document.createElement('script');
     script.id = scriptId;
+    script.type = 'module';
     script.onload = () => {
       resolve(window.microui.apps[manifest.name]);
     };
