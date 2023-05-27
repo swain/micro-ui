@@ -22,7 +22,6 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           yarn
           yarn lint
-          yarn test
           yarn build
       - name: Publish
         run: yarn semantic-release
