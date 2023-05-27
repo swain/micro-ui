@@ -1,7 +1,12 @@
 module.exports = {
-  extends: ['@lifeomic/standards', 'prettier', 'plugin:prettier/recommended'],
+  extends: [
+    '@lifeomic/standards/typescript',
+    'prettier',
+    'plugin:prettier/recommended',
+  ],
   plugins: ['prettier'],
   env: {
+    node: true,
     browser: true,
   },
 };
